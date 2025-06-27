@@ -1,0 +1,40 @@
+CREATE DATABASE ThuVien;
+USE ThuVien;
+
+-- Bảng NguoiDung
+CREATE TABLE NguoiDung (
+    MaNguoiDung INT AUTO_INCREMENT PRIMARY KEY,
+    TaiKhoan VARCHAR(50) UNIQUE NOT NULL,
+    MatKhau VARCHAR(100) NOT NULL,
+    VaiTro ENUM('SinhVien', 'QuanTriVien') NOT NULL
+);
+
+-- Bảng Sach
+CREATE TABLE Sach (
+    MaSach INT AUTO_INCREMENT PRIMARY KEY,
+    TenSach VARCHAR(255),
+    TacGia VARCHAR(255),
+    SoLuong INT,
+    SoLuongConLai INT
+);
+
+-- Bảng MuonSach
+CREATE TABLE MuonSach (
+    MaMuon INT AUTO_INCREMENT PRIMARY KEY,
+    MaNguoiDung INT,
+    MaSach INT,
+    NgayMuon DATE,
+    NgayTra DATE,
+    DaGiaHan BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (MaNguoiDung) REFERENCES NguoiDung(MaNguoiDung),
+    FOREIGN KEY (MaSach) REFERENCES Sach(MaSach)
+);
+
+-- Bảng ThanhToan
+CREATE TABLE ThanhToan (
+    MaGiaoDich INT AUTO_INCREMENT PRIMARY KEY,
+    MaNguoiDung INT,
+    SoTien DECIMAL(10, 2),
+    NgayThanhToan DATE,
+    FOREIGN KEY (MaNguoiDung) REFERENCES NguoiDung(MaNguoiDung)
+);

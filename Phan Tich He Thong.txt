@@ -1,0 +1,72 @@
+1. Xác định chức năng chính của app thư viện
+	*Người dùng (sinh viên):
+
+	Đăng nhập / đăng ký
+
+	Tìm kiếm sách
+
+	Mượn/trả sách
+
+	Xem lịch sử mượn
+
+	Đặt trước sách
+
+	*Quản trị viên (thủ thư):
+
+	Thêm / chỉnh sửa / xoá sách
+
+	Quản lý tài khoản sinh viên
+
+	Duyệt yêu cầu mượn / trả
+
+	Thống kê sách mượn
+
+2. Phân tích giao diện (UI)
+
+	Phác thảo từng màn hình như:
+
+	Trang đăng nhập / đăng ký
+
+	Trang danh sách sách (search, filter)
+
+	Chi tiết sách
+
+	Trang mượn / trả
+
+	Trang quản trị
+
+3. Lên kế hoạch cơ sở dữ liệu (backend)
+
+users: thông tin người dùng
+
+books: thông tin sách
+
+borrow_records: lịch sử mượn/trả
+
+reservations: đặt trước
+
+4. Dùng Flutter để xây dựng UI trước
+
+Tạo từng màn hình cơ bản trước:
+
+main.dart → màn hình khởi đầu
+
+login_screen.dart
+
+home_screen.dart
+
+book_detail.dart
+
+5. Kết nối với cơ sở dữ liệu
+
+Bạn có thể:
+
+Dùng Firebase → Flutter hỗ trợ mạnh (dễ tích hợp)
+
+Dùng MySQL + PHP API nếu bạn có server hoặc XAMPP
+
+6. Kiểm thử & nâng cấp
+
+Test thử tính năng mượn trả
+
+Thêm các chức năng nâng cao như scan QR sách, thống kê biểu đồ
