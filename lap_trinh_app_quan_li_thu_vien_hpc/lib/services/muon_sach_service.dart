@@ -1,22 +1,40 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class MuonSachService {
-  static Future<bool> muonSach(String taiKhoan, int maSach) async {
-    final response = await http.post(
-      Uri.parse('http://10.0.2.2/thu_vien_api/MuonSach.php'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'TaiKhoan': taiKhoan,
-        'MaSach': maSach,
-      }),
-    );
+  static Future<Map<String, dynamic>> muonSach({
+    required int maNguoiDung,
+    required int maSach,
+    required DateTime ngayMuon,
+    required DateTime ngayTra,
+  }) async {
+    final uri = Uri.parse('http://10.0.2.2/thu_vien_api/MuonSach.php');
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['thanhCong'] == true;
-    } else {
-      return false;
+    try {
+      final res = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'MaNguoiDung': maNguoiDung,
+          'MaSach': maSach,
+          'NgayMuon': ngayMuon.toIso8601String().split('T').first,
+          'NgayTra': ngayTra.toIso8601String().split('T').first,
+        }),
+      );
+
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        return {
+          'thanhCong': false,
+          'thongBao': 'Lỗi kết nối máy chủ (status: ${res.statusCode})'
+        };
+      }
+    } catch (e) {
+      return {
+        'thanhCong': false,
+        'thongBao': 'Lỗi: $e',
+      };
     }
   }
 }

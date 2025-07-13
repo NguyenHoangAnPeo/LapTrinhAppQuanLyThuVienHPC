@@ -1,40 +1,194 @@
-CREATE DATABASE ThuVien;
-USE ThuVien;
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th7 12, 2025 lúc 05:51 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.0.30
 
--- Bảng NguoiDung
-CREATE TABLE NguoiDung (
-    MaNguoiDung INT AUTO_INCREMENT PRIMARY KEY,
-    TaiKhoan VARCHAR(50) UNIQUE NOT NULL,
-    MatKhau VARCHAR(100) NOT NULL,
-    VaiTro ENUM('SinhVien', 'QuanTriVien') NOT NULL
-);
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
--- Bảng Sach
-CREATE TABLE Sach (
-    MaSach INT AUTO_INCREMENT PRIMARY KEY,
-    TenSach VARCHAR(255),
-    TacGia VARCHAR(255),
-    SoLuong INT,
-    SoLuongConLai INT
-);
+--
+-- Cơ sở dữ liệu: `thuvien`
+--
+CREATE DATABASE IF NOT EXISTS `thuvien` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `thuvien`;
 
--- Bảng MuonSach
-CREATE TABLE MuonSach (
-    MaMuon INT AUTO_INCREMENT PRIMARY KEY,
-    MaNguoiDung INT,
-    MaSach INT,
-    NgayMuon DATE,
-    NgayTra DATE,
-    DaGiaHan BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (MaNguoiDung) REFERENCES NguoiDung(MaNguoiDung),
-    FOREIGN KEY (MaSach) REFERENCES Sach(MaSach)
-);
+-- --------------------------------------------------------
 
--- Bảng ThanhToan
-CREATE TABLE ThanhToan (
-    MaGiaoDich INT AUTO_INCREMENT PRIMARY KEY,
-    MaNguoiDung INT,
-    SoTien DECIMAL(10, 2),
-    NgayThanhToan DATE,
-    FOREIGN KEY (MaNguoiDung) REFERENCES NguoiDung(MaNguoiDung)
-);
+--
+-- Cấu trúc bảng cho bảng `muonsach`
+--
+
+DROP TABLE IF EXISTS `muonsach`;
+CREATE TABLE `muonsach` (
+  `MaMuon` int(11) NOT NULL,
+  `MaNguoiDung` int(11) DEFAULT NULL,
+  `MaSach` int(11) DEFAULT NULL,
+  `NgayMuon` date DEFAULT NULL,
+  `NgayTra` date DEFAULT NULL,
+  `SoTien` double NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `muonsach`
+--
+
+INSERT INTO `muonsach` (`MaMuon`, `MaNguoiDung`, `MaSach`, `NgayMuon`, `NgayTra`, `SoTien`) VALUES
+(8, 1, 1, '2025-07-12', '2025-07-19', 35000),
+(9, 1, 1, '2025-07-12', '2026-07-19', 1860000);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `nguoidung`
+--
+
+DROP TABLE IF EXISTS `nguoidung`;
+CREATE TABLE `nguoidung` (
+  `MaNguoiDung` int(11) NOT NULL,
+  `TaiKhoan` varchar(50) NOT NULL,
+  `MatKhau` varchar(100) NOT NULL,
+  `VaiTro` enum('SinhVien','QuanTriVien') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `nguoidung`
+--
+
+INSERT INTO `nguoidung` (`MaNguoiDung`, `TaiKhoan`, `MatKhau`, `VaiTro`) VALUES
+(1, 'sinhvien', '123456', 'SinhVien'),
+(2, 'admin', '123456', 'QuanTriVien'),
+(3, 'sinhvien1', '123456', 'SinhVien');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `sach`
+--
+
+DROP TABLE IF EXISTS `sach`;
+CREATE TABLE `sach` (
+  `MaSach` int(11) NOT NULL,
+  `TenSach` varchar(255) DEFAULT NULL,
+  `TacGia` varchar(255) DEFAULT NULL,
+  `SoLuong` int(11) DEFAULT NULL,
+  `SoLuongConLai` int(11) DEFAULT NULL,
+  `HinhAnh` varchar(255) DEFAULT NULL,
+  `Gia` decimal(10,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `sach`
+--
+
+INSERT INTO `sach` (`MaSach`, `TenSach`, `TacGia`, `SoLuong`, `SoLuongConLai`, `HinhAnh`, `Gia`) VALUES
+(1, 'Bup sen xanh', 'Son Tung', 2, 2, 'images\\bupsenxanh.jpg', 5000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `thanhtoan`
+--
+
+DROP TABLE IF EXISTS `thanhtoan`;
+CREATE TABLE `thanhtoan` (
+  `MaGiaoDich` int(11) NOT NULL,
+  `MaNguoiDung` int(11) DEFAULT NULL,
+  `SoTien` decimal(10,2) DEFAULT NULL,
+  `NgayThanhToan` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `thanhtoan`
+--
+
+INSERT INTO `thanhtoan` (`MaGiaoDich`, `MaNguoiDung`, `SoTien`, `NgayThanhToan`) VALUES
+(1, 1, 7.00, '2025-07-08'),
+(2, 1, 35000.00, '2025-07-08'),
+(3, 1, 35000.00, '2025-07-08'),
+(4, 1, 35000.00, '2025-07-08'),
+(5, 1, 35000.00, '2025-07-09'),
+(6, 1, 35000.00, '2025-07-12'),
+(7, 1, 1860000.00, '2025-07-12');
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `muonsach`
+--
+ALTER TABLE `muonsach`
+  ADD PRIMARY KEY (`MaMuon`),
+  ADD KEY `MaNguoiDung` (`MaNguoiDung`),
+  ADD KEY `MaSach` (`MaSach`);
+
+--
+-- Chỉ mục cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  ADD PRIMARY KEY (`MaNguoiDung`),
+  ADD UNIQUE KEY `TaiKhoan` (`TaiKhoan`);
+
+--
+-- Chỉ mục cho bảng `sach`
+--
+ALTER TABLE `sach`
+  ADD PRIMARY KEY (`MaSach`);
+
+--
+-- Chỉ mục cho bảng `thanhtoan`
+--
+ALTER TABLE `thanhtoan`
+  ADD PRIMARY KEY (`MaGiaoDich`),
+  ADD KEY `MaNguoiDung` (`MaNguoiDung`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `muonsach`
+--
+ALTER TABLE `muonsach`
+  MODIFY `MaMuon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  MODIFY `MaNguoiDung` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `sach`
+--
+ALTER TABLE `sach`
+  MODIFY `MaSach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `thanhtoan`
+--
+ALTER TABLE `thanhtoan`
+  MODIFY `MaGiaoDich` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `muonsach`
+--
+ALTER TABLE `muonsach`
+  ADD CONSTRAINT `muonsach_ibfk_1` FOREIGN KEY (`MaNguoiDung`) REFERENCES `nguoidung` (`MaNguoiDung`),
+  ADD CONSTRAINT `muonsach_ibfk_2` FOREIGN KEY (`MaSach`) REFERENCES `sach` (`MaSach`);
+
+--
+-- Các ràng buộc cho bảng `thanhtoan`
+--
+ALTER TABLE `thanhtoan`
+  ADD CONSTRAINT `thanhtoan_ibfk_1` FOREIGN KEY (`MaNguoiDung`) REFERENCES `nguoidung` (`MaNguoiDung`);
+COMMIT;

@@ -4,7 +4,8 @@ class Sach {
   final String tacGia;
   final int soLuong;
   final int soLuongConLai;
-  final String? hinhAnh; // Thêm dòng này
+  final double gia; // mới thêm
+  final String? hinhAnh;
 
   Sach({
     required this.maSach,
@@ -12,7 +13,8 @@ class Sach {
     required this.tacGia,
     required this.soLuong,
     required this.soLuongConLai,
-    this.hinhAnh, // Thêm dòng này
+    required this.gia,
+    this.hinhAnh,
   });
 
   factory Sach.fromJson(Map<String, dynamic> json) {
@@ -22,7 +24,8 @@ class Sach {
       tacGia: json['TacGia'],
       soLuong: int.parse(json['SoLuong']),
       soLuongConLai: int.parse(json['SoLuongConLai']),
-      hinhAnh: json['HinhAnh'], // Thêm dòng này
+      gia: double.parse(json['Gia'] ?? '0'),
+      hinhAnh: json['HinhAnh'],
     );
   }
 }
